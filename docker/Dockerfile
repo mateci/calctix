@@ -25,6 +25,8 @@ COPY sql/main.sql /mnt/main.sql
 RUN service mariadb start && mysql -u root -h localhost < /mnt/docker.sql && mysql -u root -h localhost calctix < /mnt/main.sql
 RUN sed -i 's/bind-address/#bind-address/' /etc/mysql/mariadb.conf.d/50-server.cnf
 
+RUN sed -i 's/# requirepass foobared/requirepass Ty7snB\&sgdvK6dg/' /etc/redis/redis.conf
+
 COPY docker.sh /mnt/docker.sh
 RUN chmod +x /mnt/docker.sh
 ENTRYPOINT /mnt/docker.sh

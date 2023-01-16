@@ -2,9 +2,29 @@ const cluster = require('cluster');
 const http = require('http');
 const url = require('url');
 const fs = require('fs');
+const redis = require('redis');
 const process = require('process');
 
+const config = require('./config');
+
 const calctixFile = fs.readFileSync('./calctix.js');
+
+async function connectRedis() {
+    const redisClient = redis.createClient({
+        socket: {
+            port: config.redis.port,
+            host: config.redis.host
+        }
+    });
+
+    redisClient.on('error', (err) => console.log('Redis Client Error', err));
+    
+    await redisClient.connect();
+    console.log('Redis Connected');
+    await redisClient.sendCommand(['auth', config.redis.pass]);
+}
+
+connectRedis();
 
 const requestListener = function (req, res) {
     let uri = url.parse(req.url, true);
