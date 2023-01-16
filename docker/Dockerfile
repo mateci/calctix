@@ -15,6 +15,8 @@ RUN apt-get install -y mariadb-server
 
 RUN npm install -g n
 
+RUN npm install -g pm2
+
 RUN touch ~/.vimrc
 
 COPY docker.sql /mnt/docker.sql
