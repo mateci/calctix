@@ -1,0 +1,11 @@
+version: "3.1"
+services:
+    nodejs:
+        build: .
+        volumes:
+         - ..:/mnt/apps
+        ports:
+         - "8080:80"
+         - "3306:3306"
+volumes:
+    persistent:
