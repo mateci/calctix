@@ -1,0 +1,66 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="calctix.js?id=1" async></script>
+</head>
+
+<body>
+    <a href="/">Referer</a>
+    <br>
+    İstatistikler:
+    <br>
+    <div id="stats"></div>
+    <script type="text/javascript">
+        (function() {
+            var requestUrl = '/stats?id=1';
+
+            function sendRequest() {
+                var xhttp = new XMLHttpRequest();
+                
+                xhttp.withCredentials = true;
+
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        if(this.responseText && this.responseText != '') {
+                            var text = 'Son 60 saniye sayfa görüntüleme: <br><br>';
+
+                            var now = parseInt(Date.now() / 1000);
+
+                            var data = JSON.parse(this.responseText);
+                            for(var i in data.secondly) {
+                                var unixtime = i.split(':')[1];
+                                if(now - unixtime < 60) {
+                                    text += (now - unixtime) + ':' + data.secondly[i] + '<br>';
+                                }
+                            }
+
+                            text += '<br>Son 30 dakika sayfa görüntüleme: <br><br>';
+
+                            var data = JSON.parse(this.responseText);
+                            for(var i in data.minutely) {
+                                var unixtime = i.split(':')[1];
+                                var passingMinute = parseInt((now - unixtime) / 60) + 1;
+
+                                if(passingMinute < 30) {
+                                    text += passingMinute + ':' + data.minutely[i] + '<br>';
+                                }
+                            }
+
+                            document.getElementById('stats').innerHTML = text;
+                        }
+                    }
+                };
+
+                xhttp.open("GET", requestUrl, true);
+                xhttp.send();
+            }
+
+            setInterval(function() {
+                sendRequest();
+            }, 1000);
+        })();
+    </script>
+</body>
+
+</html>

@@ -4,3 +4,6 @@ exports.redis = {
     'pass': 'Ty7snB&sgdvK6dg',
 };
 
+exports.http = {
+    'port': '80',
+};

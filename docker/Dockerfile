@@ -2,7 +2,7 @@ FROM ubuntu:latest
 
 RUN apt-get update
 
-RUN apt-get -y install curl vim net-tools wget git procps
+RUN apt-get -y install curl vim net-tools wget git procps make
 
 RUN curl -sL https://deb.nodesource.com/setup_18.x  | bash -
 RUN apt-get -y install nodejs
